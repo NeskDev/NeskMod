@@ -1,10 +1,7 @@
 package fr.neskuik.mod.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,6 +11,7 @@ import org.bukkit.entity.Player;
 public class PtpCommand extends BaseCommand {
 
     @Default
+    @CommandCompletion("@players")
     public void onPtp(Player sender, String targetName) {
         Player target = Bukkit.getPlayer(targetName);
         if (target != null && target.isOnline()) {
