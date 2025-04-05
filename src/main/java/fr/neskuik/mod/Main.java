@@ -2,6 +2,7 @@ package fr.neskuik.mod;
 
 import co.aikar.commands.PaperCommandManager;
 import fr.neskuik.mod.commands.*;
+import fr.neskuik.mod.commands.sanctions.SanctionsCommand;
 import fr.neskuik.mod.listeners.InvseeListener;
 import fr.neskuik.mod.listeners.ModEventListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +39,7 @@ public class Main extends JavaPlugin {
         manager.registerCommand(new PtpCommand());
         manager.registerCommand(new TphCommand());
         manager.registerCommand(vanish);
+        manager.registerCommand(new SanctionsCommand());
 
         /**
          * Registers Listeners
