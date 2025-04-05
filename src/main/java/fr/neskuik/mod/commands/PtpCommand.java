@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("ptp|tpa")
-@CommandPermission("staff")
+@CommandPermission("join.moderation")
 @Description("Téléporte vous vers un joueur")
 public class PtpCommand extends BaseCommand {
 

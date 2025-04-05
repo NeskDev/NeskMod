@@ -34,7 +34,7 @@ public class VanishCommand extends BaseCommand {
     }
 
     @Subcommand("supervanish")
-    @CommandPermission("core.supervanish|§fCommande Inconnu(e).")
+    @CommandPermission("vanish.supervanish|§fCommande Inconnu(e).")
     public void superVanish(Player player) {
         if (isSuperVanish(player)) {
             showPlayerToAll(player);

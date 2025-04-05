@@ -17,7 +17,7 @@ public class InvseeCommand extends BaseCommand implements CommandExecutor {
 
     @Subcommand("open")
     @CommandCompletion("@players")
-    @CommandPermission("invsee.use")
+    @CommandPermission("join.moderation")
     public void onInvsee(Player player, Player target) {
         if (target == null || !target.isOnline()) {
             player.sendMessage("§cLe joueur n'est pas en ligne.");

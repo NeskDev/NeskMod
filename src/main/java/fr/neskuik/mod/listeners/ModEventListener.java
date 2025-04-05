@@ -82,6 +82,7 @@ public class ModEventListener implements Listener {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item != null) {
                     switch (item.getType()) {
+
                         case ICE -> {
                             FreezeCommand.Freeze(player);
                         }
