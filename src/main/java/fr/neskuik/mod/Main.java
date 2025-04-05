@@ -47,6 +47,7 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new InvseeListener(), this);
         getServer().getPluginManager().registerEvents(new ModEventListener(modCommand, vanish), this);
+        getServer().getPluginManager().registerEvents(new FreezeCommand(), this);
 
         getLogger().info("Plugin NeskMod enabled!");
     }
