@@ -17,6 +17,14 @@ public class Main extends JavaPlugin {
 
         PaperCommandManager manager = new PaperCommandManager(this);
 
+
+        /**
+         * Inits of Listeners
+         */
+
+        vanish = new VanishCommand(this);
+        modCommand = new ModCommand(this, vanish);
+
         /**
          * Registers Commands
          */
@@ -26,10 +34,10 @@ public class Main extends JavaPlugin {
         manager.registerCommand(new FlyCommand());
         manager.registerCommand(new FreezeCommand());
         manager.registerCommand(new InvseeCommand());
-        manager.registerCommand(new ModCommand(this, vanish));
+        manager.registerCommand(modCommand);
         manager.registerCommand(new PtpCommand());
         manager.registerCommand(new TphCommand());
-        manager.registerCommand(new VanishCommand(this));
+        manager.registerCommand(vanish);
 
         /**
          * Registers Listeners
@@ -37,7 +45,6 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new InvseeListener(), this);
         getServer().getPluginManager().registerEvents(new ModEventListener(modCommand, vanish), this);
-
 
         getLogger().info("Plugin NeskMod enabled!");
     }
