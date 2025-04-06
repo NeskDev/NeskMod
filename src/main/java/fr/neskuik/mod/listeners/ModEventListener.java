@@ -27,49 +27,49 @@ public class ModEventListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player player = e.getPlayer();
         if (modCommand.isInModMode(player)) {
-            event.setCancelled(true);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
         modCommand.onDisableMod(player);
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
+    public void onBlockPlace(BlockPlaceEvent e) {
+        Player player = e.getPlayer();
         if (modCommand.isInModMode(player)) {
-            event.setCancelled(true);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
+    public void onItemDrop(PlayerDropItemEvent e) {
+        Player player = e.getPlayer();
         if (modCommand.isInModMode(player)) {
-            event.setCancelled(true);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player player) {
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player player) {
             if (modCommand.isInModMode(player)) {
-                event.setCancelled(true);
+                e.setCancelled(true);
             }
         }
     }
 
     @EventHandler
-    public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getWhoClicked() instanceof Player player) {
+    public void onInventoryDrag(InventoryDragEvent e) {
+        if (e.getWhoClicked() instanceof Player player) {
             if (modCommand.isInModMode(player)) {
-                event.setCancelled(true);
+                e.setCancelled(true);
             }
         }
     }
