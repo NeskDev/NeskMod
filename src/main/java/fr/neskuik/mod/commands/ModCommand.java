@@ -66,6 +66,22 @@ public class ModCommand extends BaseCommand {
         }
     }
 
+    public void disableMod(Player player) {
+        if (modPlayers.contains(player)) {
+            modPlayers.remove(player);
+
+            player.getInventory().clear();
+
+            player.sendMessage("§9§lModération §f• §7Vous avez §cdésactivé §7votre §emode modération§7.");
+
+            if (vanish != null) {
+                vanish.showPlayerToAll(player);
+            } else {
+                player.sendMessage("§cErreur : Impossible d'afficher les joueurs (Vanish non initialisé).");
+            }
+        }
+    }
+
     private void giveItem(Player player, Material material, String name, Enchantment enchantment, int level, int slot) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
