@@ -85,4 +85,8 @@ public class PlayerCPSWrapper {
         clicksLeft = new int[]{0, 0, 0};
         clicksRight = new int[]{0, 0, 0};
     }
+
+    public static Player getTargetPlayer(final Player p) {
+        return getTarget(p, p.getWorld().getPlayers());
+    }
 }
