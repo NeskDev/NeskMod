@@ -1,30 +1,47 @@
 package fr.neskuik.mod.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import static org.bukkit.Bukkit.getPlayer;
+
 @CommandAlias("fly")
-public class FlyCommand extends BaseCommand implements CommandExecutor {
+public class FlyCommand extends BaseCommand {
 
     @Default("fly")
     @CommandPermission("fly.use")
-    public void onFlyToggle(Player player) {
-        boolean isFlying = player.isFlying();
-        player.setAllowFlight(!isFlying); // Autoriser ou désactiver le vol
-        player.setFlying(!isFlying); // Activer ou désactiver le vol
+    public void onFlyToggle(Player player, @Optional String targetName) {
+        Player target = getPlayer(targetName);
 
-        if (!isFlying) {
-            player.sendMessage("§aVous êtes maintenant en mode vol.");
+        if (target == null) {
+            boolean isFlying = player.isFlying();
+            player.setAllowFlight(!isFlying); // Autoriser ou désactiver le vol
+            player.setFlying(!isFlying); // Activer ou désactiver le vol
+
+            if (!isFlying) {
+                player.sendMessage("§aVous êtes maintenant en mode vol.");
+            } else {
+                player.sendMessage("§cVous avez quitté le mode vol.");
+            }
         } else {
-            player.sendMessage("§cVous avez quitté le mode vol.");
+            boolean isFlying = target.isFlying();
+            target.setAllowFlight(!isFlying); // Autoriser ou désactiver le vol
+            target.setFlying(!isFlying); // Activer ou désactiver le vol
+            if (!isFlying) {
+                player.sendMessage("§aVous avez activé le vol pour " + target.getName() + ".");
+                target.sendMessage("§aVous êtes maintenant en mode vol.");
+            } else {
+                player.sendMessage("§cVous avez désactivé le vol pour " + target.getName() + ".");
+                target.sendMessage("§cVous avez quitté le mode vol.");
+            }
         }
+
+
+
     }
 
     @Subcommand("status")
@@ -37,26 +54,4 @@ public class FlyCommand extends BaseCommand implements CommandExecutor {
         }
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cSeuls les joueurs peuvent utiliser cette commande.");
-            return true;
-        }
-
-        if (!player.hasPermission("fly.use")) {
-            player.sendMessage("§c[Erreur] Vous n'avez pas la permission d'utiliser cette commande.");
-            return true;
-        }
-
-        if (args.length == 0 || args[0].equalsIgnoreCase("toggle")) {
-            onFlyToggle(player);
-        } else if (args[0].equalsIgnoreCase("status")) {
-            onFlyStatus(player);
-        } else {
-            player.sendMessage("§cUtilisation: /fly <toggle/status>");
-        }
-
-        return true;
-    }
 }
