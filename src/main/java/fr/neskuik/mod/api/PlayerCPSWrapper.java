@@ -1,9 +1,12 @@
 package fr.neskuik.mod.api;
 
 import lombok.Getter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -88,5 +91,22 @@ public class PlayerCPSWrapper {
 
     public static Player getTargetPlayer(final Player p) {
         return getTarget(p, p.getWorld().getPlayers());
+    }
+
+    public static Player getTarget(final Entity entity, final List<Player> entities) {
+        if (entity == null)
+            return null;
+        if (entities == null)
+            return null;
+        Player target = null;
+        double threshold = 1;
+        for (Player other : entities) {
+            Vector n = other.getLocation().toVector().subtract(entity.getLocation().toVector());
+            if (entity.getLocation().getDirection().normalize().crossProduct(n).lengthSquared() < threshold && n.normalize().dot(entity.getLocation().getDirection().normalize()) >= 0) {
+                if (target == null || target.getLocation().distanceSquared(entity.getLocation()) > other.getLocation().distanceSquared(entity.getLocation()))
+                    target = other;
+            }
+        }
+        return target;
     }
 }
