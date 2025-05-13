@@ -41,6 +41,7 @@ public class Main extends JavaPlugin {
         manager.registerCommand(new TphCommand());
         manager.registerCommand(vanish);
         manager.registerCommand(new SanctionsCommand());
+        manager.registerCommand(new CPSCommand());
 
         /**
          * Registers Listeners
