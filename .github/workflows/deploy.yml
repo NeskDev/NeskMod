@@ -1,0 +1,100 @@
+name: Build and Deploy NeskMod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Find latest NeskMod.jar
+        id: find-jar
+        run: |
+          jar_path=$(find . -type f -name "NeskMod.jar" | head -n 1)
+          echo "jar-path=$jar_path" >> $GITHUB_OUTPUT
+
+      - name: Get current date and time (France)
+        id: datetime
+        run: |
+          TIMESTAMP="Date : $(TZ=Europe/Paris date '+%d.%m.%Y - Time : %Hh%M (France)')"
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+
+      - name: Get latest release info
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const latestRelease = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            core.setOutput('release_id', latestRelease.data.id);
+            core.setOutput('tag_name', latestRelease.data.tag_name);
+            core.setOutput('body', latestRelease.data.body || "");
+
+      - name: Delete old JAR from release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releaseId = '${{ steps.get_release.outputs.release_id }}';
+            const { data: assets } = await github.rest.repos.listReleaseAssets({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+            });
+
+            for (const asset of assets) {
+              if (asset.name === 'NeskMod.jar') {
+                await github.rest.repos.deleteReleaseAsset({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  asset_id: asset.id,
+                });
+                core.info(`Deleted old asset: ${asset.name}`);
+              }
+            }
+
+      - name: Upload new JAR to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_release.outputs.tag_name }}
+          files: ${{ steps.find-jar.outputs.jar-path }}
+
+      - name: Update release body with timestamp
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releaseId = '${{ steps.get_release.outputs.release_id }}';
+            const oldBody = `\`${{ steps.get_release.outputs.body }}\``;
+            const newTimestamp = '${{ steps.datetime.outputs.timestamp }}';
+            const updatedBody = oldBody + "\n\n" + newTimestamp;
+
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+              body: updatedBody,
+            });
+
+            core.info("Updated release body with timestamp.");
