@@ -14,6 +14,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        long startTime = System.currentTimeMillis();
         getLogger().info("Plugin NeskMod starting...");
 
         PaperCommandManager manager = new PaperCommandManager(this);
@@ -49,7 +50,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ModEventListener(modCommand, vanish), this);
         getServer().getPluginManager().registerEvents(new FreezeCommand(), this);
 
-        getLogger().info("Plugin NeskMod enabled!");
+        getLogger().info("Plugin NeskMod enabled in " + (System.currentTimeMillis() - startTime) + "ms !");
     }
 
     @Override
