@@ -37,7 +37,7 @@ public class ModEventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        modCommand.onDisableMod(player);
+        modCommand.disableMod(player);
     }
 
     @EventHandler
