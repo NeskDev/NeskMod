@@ -28,44 +28,41 @@ public class ModCommand extends BaseCommand {
         this.modPlayers = new HashSet<>();
     }
 
-    @Subcommand("enable")
+    @Default
     public void onMod(Player player) {
-        if (player == null || isInModMode(player)) return;
+        if (player == null) return;
 
-        modPlayers.add(player);
+        if (modPlayers.contains(player)) {
+            modPlayers.remove(player);
 
-        vanish.hidePlayerFromAll(player);
+            player.getInventory().clear();
 
-        player.getInventory().clear();
+            player.sendMessage("§9§lModération §f• §7Vous avez §cdésactivé §7votre §emode modération§7.");
 
-        giveItem(player, Material.DIAMOND_SWORD, "§cEpée KB", Enchantment.KNOCKBACK, 2, 0);
-        giveItem(player, Material.ICE, "§bFreeze", null, 0, 1);
-        giveItem(player, Material.NETHER_STAR, "§6Panel de Modération", null, 0, 4);
-
-        if (player.hasPermission("core.supervanish")) {
-            giveItem(player, Material.BONE, "§dSuper-Vanish", null, 0, 6);
-        }
-
-        giveItem(player, Material.ENDER_PEARL, "§aVanish", null, 0, 7);
-        giveItem(player, Material.PAPER, "§bCPS", null, 0, 8);
-
-        player.sendMessage("§9§lModération §f• §7Vous êtes §adésormais §7en §emode modération.");
-    }
-
-    @Subcommand("disable")
-    public void onDisableMod(Player player) {
-        if (player == null || !isInModMode(player)) return;
-
-        modPlayers.remove(player);
-
-        player.getInventory().clear();
-
-        player.sendMessage("§9§lModération §f• §7Vous avez §cdésactivé §7votre §emode modération§7.");
-
-        if (vanish != null) {
-            vanish.showPlayerToAll(player);
+            if (vanish != null) {
+                vanish.showPlayerToAll(player);
+            } else {
+                player.sendMessage("§cErreur : Impossible d'afficher les joueurs (Vanish non initialisé).");
+            }
         } else {
-            player.sendMessage("§cErreur : Impossible d'afficher les joueurs (Vanish non initialisé).");
+            modPlayers.add(player);
+
+            vanish.hidePlayerFromAll(player);
+
+            player.getInventory().clear();
+
+            giveItem(player, Material.DIAMOND_SWORD, "§cEpée KB", Enchantment.KNOCKBACK, 2, 0);
+            giveItem(player, Material.ICE, "§bFreeze", null, 0, 1);
+            giveItem(player, Material.NETHER_STAR, "§6Panel de Modération", null, 0, 4);
+
+            if (player.hasPermission("core.supervanish")) {
+                giveItem(player, Material.BONE, "§dSuper-Vanish", null, 0, 6);
+            }
+
+            giveItem(player, Material.ENDER_PEARL, "§aVanish", null, 0, 7);
+            giveItem(player, Material.PAPER, "§bCPS", null, 0, 8);
+
+            player.sendMessage("§9§lModération §f• §7Vous êtes §adésormais §7en §emode modération.");
         }
     }
 
@@ -88,8 +85,4 @@ public class ModCommand extends BaseCommand {
         return modPlayers != null && modPlayers.contains(player);
     }
 
-    @Default
-    public void onModHelp(Player player) {
-        player.sendMessage("§9§lModération §f• §7Utilisation : /mod <enable/disable>");
-    }
 }
