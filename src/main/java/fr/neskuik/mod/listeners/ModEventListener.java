@@ -1,5 +1,6 @@
 package fr.neskuik.mod.listeners;
 
+import fr.neskuik.mod.api.PlayerCPSWrapper;
 import fr.neskuik.mod.commands.FreezeCommand;
 import fr.neskuik.mod.commands.ModCommand;
 import fr.neskuik.mod.commands.VanishCommand;
@@ -100,7 +101,13 @@ public class ModEventListener implements Listener {
                             vanishCommand.vanish(player);
                         }
                         case PAPER -> {
+                            Player targetPlayer = PlayerCPSWrapper.getTargetPlayer(player);
+                            if (targetPlayer == null) {
+                                player.sendMessage("§9§lMOD §f• §cVous devez viser un joueur correctement.");
+                                return;
+                            }
 
+                            player.chat("/cps " + targetPlayer.getName());
                         }
 
                         default -> {
