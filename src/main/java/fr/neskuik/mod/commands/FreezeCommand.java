@@ -62,13 +62,9 @@ public class FreezeCommand extends BaseCommand implements Listener {
 
     public static void Freeze(Player target) {
         frozenPlayers.add(target);
-        target.setWalkSpeed(0.0f);  // Empêche le joueur de bouger
-        target.setAllowFlight(true); // Permet de "voler" pour simuler un gel
     }
 
     public static void Unfreeze(Player target) {
         frozenPlayers.remove(target);
-        target.setWalkSpeed(0.2f);  // Restaure la vitesse de marche par défaut
-        target.setAllowFlight(false); // Désactive le vol
     }
 }
