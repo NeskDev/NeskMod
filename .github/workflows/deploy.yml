@@ -86,9 +86,13 @@ jobs:
         with:
           script: |
             const releaseId = '${{ steps.get_release.outputs.release_id }}';
-            const oldBody = `\`${{ steps.get_release.outputs.body }}\``;
+            const oldBody = `${{ steps.get_release.outputs.body }}`;
             const newTimestamp = '${{ steps.datetime.outputs.timestamp }}';
-            const updatedBody = oldBody + "\n\n" + newTimestamp;
+
+            // Regex to match the previous timestamp line
+            const bodyWithoutOldTimestamp = oldBody.replace(/Date\s*:\s*\d{2}\.\d{2}\.\d{4}\s*-\s*Time\s*:\s*\d{2}h\d{2}\s*\(France\)\s*/g, '').trim();
+
+            const updatedBody = `${bodyWithoutOldTimestamp}\n\n${newTimestamp}`;
 
             await github.rest.repos.updateRelease({
               owner: context.repo.owner,
@@ -97,4 +101,4 @@ jobs:
               body: updatedBody,
             });
 
-            core.info("Updated release body with timestamp.");
+            core.info("Updated release body with new timestamp.");
