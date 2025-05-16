@@ -110,9 +110,6 @@ public class ModEventListener implements Listener {
                             player.chat("/cps " + targetPlayer.getName());
                         }
 
-                        default -> {
-
-                        }
                     }
                 }
             }
