@@ -25,9 +25,6 @@ public class PlayerCPSWrapper {
     public long lastBlockInteractionR = 0;
     public long lastAlert = 0;
 
-
-
-
     private static final int MAX_CPS = 20;
 
 
