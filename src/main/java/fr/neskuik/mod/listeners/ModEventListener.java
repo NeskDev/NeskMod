@@ -85,7 +85,24 @@ public class ModEventListener implements Listener {
                     switch (item.getType()) {
 
                         case ICE -> {
-                            FreezeCommand.Freeze(player);
+                            Player targetPlayer = PlayerCPSWrapper.getTargetPlayer(player);
+
+                            if (targetPlayer == null) {
+                                player.sendMessage("§9§lMOD §f• §cVous devez viser un joueur correctement.");
+                                return;
+                            }
+
+                            if (targetPlayer == player) {
+                                player.sendMessage("§9§lMOD §f• §cVous ne pouvez pas vous geler vous-même.");
+                                return;
+                            }
+
+                            if (FreezeCommand.frozenPlayers.contains(targetPlayer)) {
+                                FreezeCommand.Unfreeze(targetPlayer);
+                            } else {
+                                FreezeCommand.Freeze(targetPlayer);
+                            }
+
                         }
 
                         case NETHER_STAR -> {
