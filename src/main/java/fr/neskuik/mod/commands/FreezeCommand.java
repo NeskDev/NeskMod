@@ -14,7 +14,7 @@ import java.util.Set;
 @CommandAlias("freeze")
 public class FreezeCommand extends BaseCommand implements Listener {
 
-    private static final Set<Player> frozenPlayers = new HashSet<>();
+    public static final Set<Player> frozenPlayers = new HashSet<>();
 
     @Default
     @CommandPermission("join.moderation")
