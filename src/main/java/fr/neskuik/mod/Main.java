@@ -5,6 +5,7 @@ import fr.neskuik.mod.commands.*;
 import fr.neskuik.mod.commands.sanctions.SanctionsCommand;
 import fr.neskuik.mod.listeners.InvseeListener;
 import fr.neskuik.mod.listeners.ModEventListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -58,8 +59,12 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         long endTime = System.currentTimeMillis();
         getLogger().info("Plugin NeskMod stopping...");
-
+        getLogger().info("Unregistering commands...");
+        PaperCommandManager manager = new PaperCommandManager(this);
+        manager.unregisterCommands();
+        getLogger().info("Unregistering listeners...");
         getLogger().info("Plugin disabled in " + (endTime - System.currentTimeMillis()) + "ms !");
+        getServer().getPluginManager().disablePlugin(this);
     }
 
 }
