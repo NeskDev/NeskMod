@@ -56,9 +56,10 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        long endTime = System.currentTimeMillis();
         getLogger().info("Plugin NeskMod stopping...");
 
-        getLogger().info("Plugin disabled!");
+        getLogger().info("Plugin disabled in " + (endTime - System.currentTimeMillis()) + "ms !");
     }
 
 }
