@@ -22,6 +22,8 @@ public class Main extends JavaPlugin {
 
         PaperCommandManager manager = new PaperCommandManager(this);
 
+        CheckUpdates.init(this);
+
 
         /**
          * Inits of Listeners
@@ -56,7 +58,6 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FreezeCommand(), this);
         getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
 
-        CheckUpdates.init(this);
 
         getLogger().info("Plugin enabled in " + (System.currentTimeMillis() - startTime) + "ms !");
     }
