@@ -116,7 +116,7 @@ public class CheckUpdates {
                     }
                 }
 
-                sender.sendMessage("§aNeskMod v" + json.getString("tag_name") + " téléchargé dans §e/plugins/update/");
+                sender.sendMessage("§aNeskMod " + json.getString("tag_name") + " téléchargé dans §e/plugins/update/");
                 sender.sendMessage("§6Redémarrez le serveur pour appliquer la mise à jour.");
 
             } catch (Exception e) {
