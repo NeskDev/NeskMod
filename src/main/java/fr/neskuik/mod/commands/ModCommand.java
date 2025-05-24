@@ -79,6 +79,9 @@ public class ModCommand extends BaseCommand {
 
             player.getInventory().clear();
 
+            player.setAllowFlight(false);
+            player.setFlying(false);
+
             player.sendMessage("§9§lModération §f• §7Vous avez §cdésactivé §7votre §emode modération§7.");
 
             if (vanish != null) {
