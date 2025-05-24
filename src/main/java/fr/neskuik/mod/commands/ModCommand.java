@@ -73,6 +73,13 @@ public class ModCommand extends BaseCommand {
         }
     }
 
+    @Subcommand("help")
+    public void onHelp(Player player) {
+        player.sendMessage("§9§lModération §f• §7Commandes disponibles :");
+        player.sendMessage("§6/mod §f- Activer/Désactiver le mode modération. -> §cAttention : Ton inventaire ne sera pas sauvegardé !");
+        player.sendMessage("§6/mod help §f- Afficher cette aide.");
+    }
+
     public void disableMod(Player player) {
         if (modPlayers.contains(player)) {
             modPlayers.remove(player);
