@@ -4,30 +4,23 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
 import fr.neskuik.mod.api.CheckUpdates;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.logging.Logger;
 
 @CommandAlias("neskmod")
 @Description("Télécharge la dernière version de NeskMod depuis GitHub")
 @CommandPermission("neskmod.admin")
-public class UpdateCommand extends BaseCommand {
+public class NeskModCommand extends BaseCommand {
 
     private final JavaPlugin plugin;
     private final Logger logger;
 
     private static final String API_URL = "https://api.github.com/repos/NeskDev/NeskMod/releases/latest";
 
-    public UpdateCommand(JavaPlugin plugin) {
+    public NeskModCommand(JavaPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
     }

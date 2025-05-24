@@ -7,7 +7,6 @@ import fr.neskuik.mod.commands.sanctions.SanctionsCommand;
 import fr.neskuik.mod.event.PlayerConnectionEvent;
 import fr.neskuik.mod.listeners.InvseeListener;
 import fr.neskuik.mod.listeners.ModEventListener;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -47,7 +46,7 @@ public class Main extends JavaPlugin {
         manager.registerCommand(vanish);
         manager.registerCommand(new SanctionsCommand());
         manager.registerCommand(new CPSCommand());
-        manager.registerCommand(new UpdateCommand(this));
+        manager.registerCommand(new NeskModCommand(this));
 
         /**
          * Registers Listeners
