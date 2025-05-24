@@ -37,6 +37,9 @@ public class ModCommand extends BaseCommand {
 
             player.getInventory().clear();
 
+            player.setAllowFlight(false);
+            player.setFlying(false);
+
             player.sendMessage("§9§lModération §f• §7Vous avez §cdésactivé §7votre §emode modération§7.");
 
             if (vanish != null) {
@@ -61,6 +64,9 @@ public class ModCommand extends BaseCommand {
 
             giveItem(player, Material.ENDER_PEARL, "§aVanish", null, 0, 7);
             giveItem(player, Material.PAPER, "§bCPS", null, 0, 8);
+
+            player.setAllowFlight(true);
+            player.setFlying(true);
 
             player.sendMessage("§9§lModération §f• §7Vous êtes §adésormais §7en §emode modération.");
         }
