@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
 
 public class ModEventListener implements Listener {
 
@@ -78,13 +79,15 @@ public class ModEventListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
+
         if (modCommand.isInModMode(player)) {
             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                ItemStack item = player.getInventory().getItemInMainHand();
+                ItemStack item = player.getItemInHand();
+
                 if (item != null) {
                     switch (item.getType()) {
 
-                        case ICE -> {
+                        case ICE: {
                             Player targetPlayer = PlayerCPSWrapper.getTargetPlayer(player);
 
                             if (targetPlayer == null) {
@@ -102,34 +105,44 @@ public class ModEventListener implements Listener {
                             } else {
                                 FreezeCommand.Freeze(targetPlayer);
                             }
-
+                            break;
                         }
 
-                        case NETHER_STAR -> {
+                        case NETHER_STAR: {
                             player.performCommand("panel");
+                            break;
                         }
 
-                        case BONE -> {
+                        case BONE: {
                             vanishCommand.superVanish(player);
+                            break;
                         }
 
-                        case ENDER_PEARL -> {
+                        case ENDER_PEARL: {
                             e.setCancelled(true);
                             vanishCommand.vanish(player);
+                            break;
                         }
-                        case PAPER -> {
+
+                        case PAPER: {
                             Player targetPlayer = PlayerCPSWrapper.getTargetPlayer(player);
+
                             if (targetPlayer == null) {
                                 player.sendMessage("§9§lMOD §f• §cVous devez viser un joueur correctement.");
                                 return;
                             }
 
                             player.chat("/cps " + targetPlayer.getName());
+                            break;
                         }
 
+                        default:
+                            break;
                     }
                 }
             }
         }
     }
+
+
 }
