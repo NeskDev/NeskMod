@@ -1,8 +1,10 @@
 package fr.neskuik.mod;
 
 import co.aikar.commands.PaperCommandManager;
+import fr.neskuik.mod.api.CheckUpdates;
 import fr.neskuik.mod.commands.*;
 import fr.neskuik.mod.commands.sanctions.SanctionsCommand;
+import fr.neskuik.mod.event.PlayerConnectionEvent;
 import fr.neskuik.mod.listeners.InvseeListener;
 import fr.neskuik.mod.listeners.ModEventListener;
 import org.bukkit.Bukkit;
@@ -51,6 +53,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InvseeListener(), this);
         getServer().getPluginManager().registerEvents(new ModEventListener(modCommand, vanish), this);
         getServer().getPluginManager().registerEvents(new FreezeCommand(), this);
+        getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
+
+        CheckUpdates.init(this);
 
         getLogger().info("Plugin enabled in " + (System.currentTimeMillis() - startTime) + "ms !");
     }
