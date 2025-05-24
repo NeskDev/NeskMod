@@ -57,7 +57,7 @@ public class CheckUpdates {
                         for (Player playerOnline : Bukkit.getOnlinePlayers()) {
                             if (playerOnline.isOp()) {
                                 playerOnline.sendMessage("§cUne nouvelle mise à jour de §eNeskMod §cest disponible : §e" + latestVersion);
-                                playerOnline.sendMessage("§cTéléchargez-la ici : §ehttps://github.com/NeskDev/NeskMod/releases/latest");
+                                playerOnline.sendMessage("§cTéléchargez-la en fesant /neskmod update !");
                             }
                         }
                     });
