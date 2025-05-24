@@ -7,19 +7,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONObject;
 
 public class CheckUpdates {
 
-    private final JavaPlugin plugin;
+    private static JavaPlugin plugin;
     private static final String API_URL = "https://api.github.com/repos/NeskDev/NeskMod/releases/latest";
 
     public CheckUpdates(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void checkForUpdate() {
+    public static void checkForUpdate() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(API_URL).openConnection();
@@ -43,6 +44,15 @@ public class CheckUpdates {
                     Bukkit.getLogger().warning("[NeskMod] Une mise à jour est disponible : v" + latestVersion +
                             " (actuelle : v" + currentVersion + ")");
                     Bukkit.getLogger().warning("[NeskMod] Téléchargez-la ici : https://github.com/NeskDev/NeskMod/releases/latest");
+
+                    for (Player playerOnline : Bukkit.getOnlinePlayers()) {
+                        if (playerOnline.hasPermission("op")) {
+                            playerOnline.sendMessage("§cUne nouvelle mise à jour de NeskMod est disponible : §e" + latestVersion);
+                            playerOnline.sendMessage("§cTéléchargez-la ici : §ehttps://github.com/NeskDev/NeskMod/releases/latest");
+                        }
+                    }
+
+
                 } else {
 
                 }
