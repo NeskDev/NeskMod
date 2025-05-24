@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class CheckUpdates {
 
     private final JavaPlugin plugin;
-    private final String apiUrl = "https://api.github.com/repos/NeskDev/NeskMod/releases/latest";
+    private static final String API_URL = "https://api.github.com/repos/NeskDev/NeskMod/releases/latest";
 
     public CheckUpdates(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -22,23 +22,22 @@ public class CheckUpdates {
     public void checkForUpdate() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();
+                HttpURLConnection connection = (HttpURLConnection) new URL(API_URL).openConnection();
                 connection.setRequestProperty("Accept", "application/vnd.github.v3+json");
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
                 }
-                reader.close();
 
                 JSONObject json = new JSONObject(response.toString());
-                String latestVersion = json.getString("tag_name").replace("v", ""); // Ex: "v1.0.1" -> "1.0.1"
-                String currentVersion = plugin.getDescription().getVersion();
+                String latestVersion = json.getString("tag_name").replace("v", "").trim();
+                String currentVersion = plugin.getDescription().getVersion().trim();
 
                 if (!currentVersion.equalsIgnoreCase(latestVersion)) {
                     Bukkit.getLogger().warning("[NeskMod] Une mise à jour est disponible : v" + latestVersion +
