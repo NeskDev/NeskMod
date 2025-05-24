@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-release:
     runs-on: ubuntu-latest
 
     permissions:
@@ -40,65 +40,37 @@ jobs:
           TIMESTAMP="Date : $(TZ=Europe/Paris date '+%d.%m.%Y - Time : %Hh%M (France)')"
           echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
 
-      - name: Get latest release info
-        id: get_release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const latestRelease = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            core.setOutput('release_id', latestRelease.data.id);
-            core.setOutput('tag_name', latestRelease.data.tag_name);
-            core.setOutput('body', latestRelease.data.body || "");
+      - name: Generate new tag
+        id: tag
+        run: |
+          latest_tag=$(git tag --sort=-v:refname | grep '^v' | head -n1)
+          if [ -z "$latest_tag" ]; then
+            new_tag="v1.0.0"
+          else
+            IFS='.' read -ra vers <<< "${latest_tag#v}"
+            major=${vers[0]}
+            minor=${vers[1]}
+            patch=${vers[2]}
+            patch=$((patch + 1))
+            new_tag="v$major.$minor.$patch"
+          fi
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
 
-      - name: Delete old JAR from release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const releaseId = '${{ steps.get_release.outputs.release_id }}';
-            const { data: assets } = await github.rest.repos.listReleaseAssets({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: releaseId,
-            });
+      - name: Create Git tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.tag.outputs.new_tag }}
+          git push origin ${{ steps.tag.outputs.new_tag }}
 
-            for (const asset of assets) {
-              if (asset.name === 'NeskMod.jar') {
-                await github.rest.repos.deleteReleaseAsset({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  asset_id: asset.id,
-                });
-                core.info(`Deleted old asset: ${asset.name}`);
-              }
-            }
-
-      - name: Upload new JAR to release
+      - name: Create GitHub Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.get_release.outputs.tag_name }}
+          tag_name: ${{ steps.tag.outputs.new_tag }}
+          name: Release ${{ steps.tag.outputs.new_tag }}
+          body: |
+            Automatically generated release.
+
+            ${{ steps.datetime.outputs.timestamp }}
           files: ${{ steps.find-jar.outputs.jar-path }}
-
-      - name: Update release body with timestamp
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const releaseId = '${{ steps.get_release.outputs.release_id }}';
-            const oldBody = `${{ steps.get_release.outputs.body }}`;
-            const newTimestamp = '${{ steps.datetime.outputs.timestamp }}';
-
-            // Regex to match the previous timestamp line
-            const bodyWithoutOldTimestamp = oldBody.replace(/Date\s*:\s*\d{2}\.\d{2}\.\d{4}\s*-\s*Time\s*:\s*\d{2}h\d{2}\s*\(France\)\s*/g, '').trim();
-
-            const updatedBody = `${bodyWithoutOldTimestamp}\n\n${newTimestamp}`;
-
-            await github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: releaseId,
-              body: updatedBody,
-            });
-
-            core.info("Updated release body with new timestamp.");
