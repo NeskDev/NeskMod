@@ -47,6 +47,7 @@ public class ModCommand extends BaseCommand {
             } else {
                 player.sendMessage("§cErreur : Impossible d'afficher les joueurs (Vanish non initialisé).");
             }
+
         } else {
             modPlayers.add(player);
 
