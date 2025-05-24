@@ -53,7 +53,7 @@ public class CheckUpdates {
                     Bukkit.getScheduler().runTask(plugin, () -> {
                         Bukkit.getLogger().warning("[NeskMod] Une mise à jour est disponible : v" + latestVersion +
                                 " (actuelle : v" + currentVersion + ")");
-                        Bukkit.getLogger().warning("[NeskMod] Téléchargez-la ici : https://github.com/NeskDev/NeskMod/releases/latest");
+                        Bukkit.getLogger().warning("[NeskMod] Téléchargez-la ici : https://github.com/NeskDev/NeskMod/releases/latest ou en fesant /neskmod update !");
 
                         for (Player playerOnline : Bukkit.getOnlinePlayers()) {
                             if (playerOnline.isOp()) {
