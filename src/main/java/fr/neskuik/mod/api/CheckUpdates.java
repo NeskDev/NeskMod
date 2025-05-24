@@ -21,8 +21,12 @@ public class CheckUpdates {
         CheckUpdates.plugin = plugin;
     }
 
+    public static void init(JavaPlugin pluginInstance) {
+        plugin = pluginInstance;
+    }
+
     public static void checkForUpdate() {
-        if (updateNotified) return; // Empêche les doublons
+        if (updateNotified) return;
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
