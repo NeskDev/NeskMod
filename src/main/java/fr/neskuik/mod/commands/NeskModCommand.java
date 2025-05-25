@@ -28,6 +28,6 @@ public class NeskModCommand extends BaseCommand {
     @Subcommand("update")
     public void onUpdateCommand(CommandSender sender) {
         sender.sendMessage("§7Téléchargement de la dernière version de §eNeskMod§7...");
-        CheckUpdates.downloadLatestJar((Player) sender);
+        CheckUpdates.downloadLatestJar(sender);
     }
 }
