@@ -55,7 +55,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InvseeListener(), this);
         getServer().getPluginManager().registerEvents(new ModEventListener(modCommand, vanish), this);
         getServer().getPluginManager().registerEvents(new FreezeCommand(), this);
-        getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(modCommand), this);
 
 
         getLogger().info("Plugin enabled in " + (System.currentTimeMillis() - startTime) + "ms !");
