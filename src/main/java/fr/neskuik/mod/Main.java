@@ -2,6 +2,7 @@ package fr.neskuik.mod;
 
 import co.aikar.commands.PaperCommandManager;
 import fr.neskuik.mod.api.CheckUpdates;
+import fr.neskuik.mod.api.PlayerCPSWrapper;
 import fr.neskuik.mod.commands.*;
 import fr.neskuik.mod.commands.sanctions.SanctionsCommand;
 import fr.neskuik.mod.event.PlayerConnectionEvent;
@@ -22,7 +23,7 @@ public class Main extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
 
         CheckUpdates.init(this);
-
+        new PlayerCPSWrapper(null);
 
         /**
          * Inits of Listeners
