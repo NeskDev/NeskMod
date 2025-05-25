@@ -10,7 +10,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerConnectionEvent implements Listener {
 
-    private ModCommand mod;
+    private final ModCommand mod;
+
+    public PlayerConnectionEvent(ModCommand mod) {
+        this.mod = mod;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
