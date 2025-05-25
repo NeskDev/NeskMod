@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONArray;
@@ -69,7 +70,7 @@ public class CheckUpdates {
         });
     }
 
-    public static void downloadLatestJar(Player sender) {
+    public static void downloadLatestJar(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(API_URL).openConnection();
